@@ -13,7 +13,7 @@ source("D:/TFM Data Science/config.R")
 
 
 
-points_df  <- read.csv(file.path(path_project, "first_data.csv"), header = T)
+points_df  <- read.csv(file.path(path_project, "reduced_data.csv"), header = T)
 
 
 #Number of NAs
@@ -62,14 +62,39 @@ prec_df %>% cor() %>% corrplot(method="number", type = "upper")
 
 ######### Variable selection #########
 
+# Normalization
+
+df_modelo_norm <- df_modelo
+
+normalize_minmax <- function(x)
+{
+  return((x- min(x)) /(max(x)-min(x)))
+}
+
+
+for(i in 1:ncol(df_modelo_norm)){
+  if(names(df_modelo_norm)[i] != "NPP"){
+    df_modelo_norm[,i] <- normalize_minmax(df_modelo_norm[,i])
+  } else{
+    df_modelo_norm[,i] <- log(df_modelo_norm[,i])
+  }
+}
+
+
+
 ### Boruta method ###
 
-boruta_output <- Boruta(NPP~., data=df_modelo_norm, doTrace=2)
+boruta_output <- Boruta(NPP~., data=df_modelo, doTrace=2)
 plot(boruta_output, cex.axis=.7, las=2, xlab="", main="Variable Importance")
+boruta_output$finalDecision
+
+boruta_output_norm <- Boruta(NPP~., data=df_modelo_norm, doTrace=2)
+plot(boruta_output_norm, cex.axis=.7, las=2, xlab="", main="Variable Importance")
+boruta_output_norm$finalDecision
 
 ### RF method ###
 cpt <- proc.time()
-rf1 <- cforest(NPP~., data=df_modelo_norm, control=cforest_unbiased(mtry=2,ntree=50))
+rf1 <- cforest(NPP~., data=df_modelo, control=cforest_unbiased(mtry=5,ntree=100))
 proc.time() - cpt
 
 

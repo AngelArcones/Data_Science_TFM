@@ -10,15 +10,18 @@ source(file.path(path_project, "Miami_model_functions.R"))
 
 #Load and reclassify NPP raster data (~ 1km x 1km)
 raw_npp <- raster(file.path(path_NPP, "MOD17A3_Science_NPP_mean_00_15.tif"))
-plot(raw_npp)
-
+#plot(raw_npp)
 
 clean_npp <- reclassify(raw_npp, matrix(c(32699, 100000, NA), ncol = 3))*0.1 #remove fill values, transform to g C / m / year
+
+clean_npp <- crop(clean_npp, crop_extention)
+clean_npp <- aggregate(clean_npp, fact=10, fun=mean)
+
 plot(clean_npp)
 
 
 #Create sampling points
-sample_points <- randomPoints(mask=clean_npp, n = 100000)
+sample_points <- randomPoints(mask=clean_npp, n = 30000)
 plot(clean_npp, main = "Net primary produtivity (NPP)\nas gr C / m^2 / year", sub="Dots represent sampling points")
 points(sample_points, pch = ".")
 
@@ -39,10 +42,11 @@ list_bioclim <- list.files(path_bioclim, pattern = "*.tif")
 
 #Calculate Miami model values
 
-bio_tmean <- raster(file.path(path_bioclim, list_bioclim[1])) #Annual mean temp in ºCx10
-bio_tmean <- bio_tmean*0.1 #convert to ºC
+bio_tmean <- raster(file.path(path_bioclim, list_bioclim[grep("bio_1.tif", list_bioclim)])) #Annual mean temp in ºCx10
+#bio_tmean <- bio_tmean*0.1 #convert to ºC
 
-bio_prec <- raster(file.path(path_bioclim, list_bioclim[12])) #Annual precipitation in mm
+bio_prec <- raster(file.path(path_bioclim, list_bioclim[grep("bio_12.tif", list_bioclim)])) #Annual precipitation in mm
+
 
 beginCluster()
 npp_tmean_miami <- calc(bio_tmean, NPP_temp)
@@ -90,6 +94,6 @@ for(i in 1:length(list_bioclim)){
   message(i, "/19 completed")
 }
 
-write.csv(points_df, file.path(path_project,"69K_data.csv"), row.names = F, )
+write.csv(points_df, file.path(path_project,"reduced_data.csv"), row.names = F, )
 
 
