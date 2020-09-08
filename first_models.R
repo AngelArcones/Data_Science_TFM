@@ -1,21 +1,17 @@
 library(raster)
 library(caret)
 library(tidyverse)
-library(rpart)
 library(randomForest)
-library(Boruta)
-library(party)
-
 
 
 source("D:/TFM Data Science/config.R")
 
 
-points_df  <- read.csv(file.path(path_project, "reduced_data.csv"), header = T)
+points_df  <- read.csv(file.path(path_project, "35k_data.csv"), header = T)
 
 
 #Prepare the main data frame
-df_modelo <- points_df %>% dplyr::select(-x, -Miami_NPP, -bio_1, -bio_3, -bio_7, -bio_11, -bio_4) %>% filter(NPP > 1)
+df_modelo <- points_df %>% dplyr::select(-x, -Miami_NPP) %>% filter(NPP > 1)
 df_modelo$y <- abs(df_modelo$y)
 df_modelo <- na.omit(df_modelo)
 
@@ -193,7 +189,7 @@ results_KNN_trans <- data.frame("Model"="KNN transformed",
 
 
 
-saveRDS(reg_KNN_norm, file.path(path_models, "KNN_norm_train_small.rds"))
+saveRDS(reg_KNN_norm, file.path(path_models, "KNN_norm_train_35k.rds"))
 PMAE_conv <- mean(abs(NPP_test - pred_log)/NPP_test)
 
 
@@ -242,7 +238,7 @@ abline(v=PMAE_conv*100, lty="dashed")
 median(abs(NPP_test - NPP_pred_tree)/NPP_test)
 abline(v=median(abs(NPP_test - NPP_pred_tree)/NPP_test)*100, col = "red")
 
-saveRDS(reg_tree, file.path(path_models, "TREE_train_70K.rds"))
+saveRDS(reg_tree, file.path(path_models, "TREE_train_35k.rds"))
 
 ######## Regression tree rpart normalized ##########
 
@@ -272,13 +268,6 @@ PMAE_conv_tree2 <- mean(abs(NPP_test - pred_log_tree2)/NPP_test)
 
 hist(NPP_test - pred_log_tree2, breaks=100, xlab = "% de desviacion", main = "Desviación (en %) de la prediccion\nrespecto al dato real")
 
-hist((abs(NPP_test - pred_log_tree2)/NPP_test)*100, xlim=c(0,600), breaks=500, xlab = "% de desviacion", main = "Desviación de las estimas del modelo KNN respecto al NPP real")
-abline(v=PMAE_conv*100, lty="dashed")
-median(abs(NPP_test - pred_log_tree2)/NPP_test)
-abline(v=median(abs(NPP_test - pred_log_tree2)/NPP_test)*100, col = "red")
-
-
-
 ####### regresion using randomForest #############
 
 df_train <- na.omit(df_modelo[sample, ])
@@ -299,16 +288,9 @@ results_tree_rf <- data.frame("Model"="RandomForest",
                               "RMSE Train"=sqrt(mean((df_train$NPP - predict(reg_rf, df_train))^2)),
                               "RMSE Test"=sqrt(mean((df_test$NPP - predict(reg_rf, df_test))^2)))
 
-pred_PMAE_rf <- mean(abs(df_test$NPP - NPP_pred_rf)/df_test$NPP)
 
-hist(NPP_test - NPP_pred_rf, breaks=100, xlab = "% de desviacion", main = "Desviación (en %) de la prediccion\nrespecto al dato real")
 
-hist((abs(NPP_test - NPP_pred_rf)/NPP_test)*100, xlim=c(0,600), breaks=500, xlab = "% de desviacion", main = "Desviación de las estimas del modelo KNN respecto al NPP real")
-abline(v=PMAE_conv*100, lty="dashed")
-median(abs(NPP_test - NPP_pred_rf)/NPP_test)
-abline(v=median(abs(NPP_test - NPP_pred_rf)/NPP_test)*100, col = "red")
-
-saveRDS(reg_rf, file.path(path_models, "RF_train_70K.rds"))
+saveRDS(reg_rf, file.path(path_models, "RF_train_35k.rds"))
 
 
 ####### Random Forest with tunning ##########
@@ -340,7 +322,7 @@ results_tree_rf_tune <- data.frame("Model"="RandomForest with tunning",
 
 
 
-saveRDS(reg_rf, file.path(path_models, "RF_train_tune.rds"))
+saveRDS(reg_rf_tune, file.path(path_models, "RF_train_tune_35k.rds"))
 # pmt <- proc.time()
 # control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
 # set.seed(42)

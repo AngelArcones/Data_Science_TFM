@@ -14,14 +14,14 @@ raw_npp <- raster(file.path(path_NPP, "MOD17A3_Science_NPP_mean_00_15.tif"))
 
 clean_npp <- reclassify(raw_npp, matrix(c(32699, 100000, NA), ncol = 3))*0.1 #remove fill values, transform to g C / m / year
 
-clean_npp <- crop(clean_npp, crop_extention)
-clean_npp <- aggregate(clean_npp, fact=10, fun=mean)
-
+#clean_npp <- crop(clean_npp, crop_extention)
+clean_npp <- aggregate(clean_npp, fact=10, fun=mean) #aggregate to 10x10km
+writeRaster(clean_npp, file.path(path_NPP, "NPP_map_clean.tif"))
 plot(clean_npp)
 
 
 #Create sampling points
-sample_points <- randomPoints(mask=clean_npp, n = 30000)
+sample_points <- randomPoints(mask=clean_npp, n = 35000)
 plot(clean_npp, main = "Net primary produtivity (NPP)\nas gr C / m^2 / year", sub="Dots represent sampling points")
 points(sample_points, pch = ".")
 
@@ -89,11 +89,12 @@ for(i in 1:length(list_bioclim)){
   map_data <- raster(file.path(path_bioclim, list_bioclim[i]))
   bioclim_df <- data.frame(raster::extract(map_data, sample_points))
   #colnames(bioclim_df) <- list_vars[i] %>% sub(prefix, "", .) %>% sub(".tif", "", .)
-  colnames(bioclim_df) <- paste0("bio_", i)
+  var_name <- strsplit(list_bioclim[i], "_") %>% unlist() %>% grep(".tif", ., value = T) %>% sub(".tif", "", .)
+  colnames(bioclim_df) <- paste0("bio_", var_name)
   points_df <- cbind(points_df, bioclim_df)
   message(i, "/19 completed")
 }
 
-write.csv(points_df, file.path(path_project,"reduced_data.csv"), row.names = F, )
+write.csv(points_df, file.path(path_project,"35k_data.csv"), row.names = F, )
 
 

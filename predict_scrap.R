@@ -31,7 +31,7 @@ all_bio <- addLayer(y_raster_clean, all_bio)
 
 names(all_bio) <- c("y", sub("wc2.1_5m_", "", names(all_bio)[2:20]))
 names(all_bio)
-all_bio <- crop(all_bio, crop_extention)
+#all_bio <- crop(all_bio, crop_extention)
 
 models_list <- list.files(path_models, full.names = T)
 KNN_models_list <- grep("KNN", models_list, value = T)
@@ -44,14 +44,8 @@ reg_tree <- readRDS(grep("TREE", models_list, value = T))
 
 ####### Load NPP map #######
 
-raw_npp <- raster(file.path(path_NPP, "MOD17A3_Science_NPP_mean_00_15.tif"))
-raw_npp <- crop(raw_npp,crop_extention)
-clean_npp <- reclassify(raw_npp, matrix(c(32699, 100000, NA), ncol = 3))*0.1 #remove fill values, transform to g C / m / year
-
-clean_npp_agg <- aggregate(clean_npp, fact=10, fun=mean)
-plot(clean_npp_agg, main="NPP map")
-
-npp_area <- reclassify(clean_npp_agg, matrix(c(0, 2600, 0), ncol = 3))*0.1 #remove fill values, transform to g C / m / year
+clean_npp <- raster(file.path(path_NPP, "NPP_map_clean.tif"))
+plot(clean_npp, main="NPP map")
 
 
 ###### RF prediction #######
@@ -63,15 +57,15 @@ proc.time() - pmt
 
 plot(RF_prediction, main="RF Prediction map")
 
-RF_PMAE_map <- abs(clean_npp_agg - RF_prediction)/clean_npp_agg 
-RF_error_map <- (clean_npp_agg - RF_prediction)
+RF_PMAE_map <- abs(clean_npp - RF_prediction)/clean_npp 
+RF_error_map <- (clean_npp - RF_prediction)
 
 plot(RF_error_map, main="Error map")
-plot(RF_error_map/clean_npp_agg, zlim=c(-50, 50))
+plot(RF_error_map/clean_npp, zlim=c(-50, 50))
 plot(RF_PMAE_map, zlim=c(0,1000))
 
 
-plot(clean_npp_agg, main="NPP map", zlim=c(0,2520))
+plot(clean_npp, main="NPP map", zlim=c(0,2520))
 plot(RF_prediction, main="RF Prediction map", zlim=c(0,2520))
 plot(RF_error_map, main="Error map", zlim=c(-1000,2520))
 plot(RF_PMAE_map, zlim=c(0,2))
@@ -104,11 +98,11 @@ proc.time() - pmt
 
 plot(KNN_prediction, main="KNN Prediction map")
 
-KNN_PMAE_map <- abs(clean_npp_agg - KNN_prediction)/clean_npp_agg 
-KNN_error_map <- (clean_npp_agg - KNN_prediction)
+KNN_PMAE_map <- abs(clean_npp - KNN_prediction)/clean_npp 
+KNN_error_map <- (clean_npp - KNN_prediction)
 
 
-plot(clean_npp_agg, main="NPP map", zlim=c(0,2560))
+plot(clean_npp, main="NPP map", zlim=c(0,2560))
 plot(KNN_prediction, main="KNN Prediction map", zlim=c(0,2560))
 plot(KNN_error_map, main="Error map")#, zlim=c(-1000,2520))
 plot(KNN_PMAE_map, zlim=c(0,2))
