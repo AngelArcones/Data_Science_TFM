@@ -229,10 +229,6 @@ results_tree_car <- data.frame("Model"="Regression Tree",
                           "RMSE Train"=sqrt(mean((df_train$NPP - predict(reg_tree, df_train))^2)),
                           "RMSE Test"=sqrt(mean((df_test$NPP - predict(reg_tree, df_test))^2)))
 
-pred_PMAE_tree <- mean(abs(df_test$NPP - NPP_pred_tree)/df_test$NPP)
-
-hist(NPP_test - NPP_pred_tree, breaks=100, xlab = "% de desviacion", main = "Desviación (en %) de la prediccion\nrespecto al dato real")
-
 hist((abs(NPP_test - NPP_pred_tree)/NPP_test)*100, xlim=c(0,600), breaks=500, xlab = "% de desviacion", main = "Desviación de las estimas del modelo KNN respecto al NPP real")
 abline(v=PMAE_conv*100, lty="dashed")
 median(abs(NPP_test - NPP_pred_tree)/NPP_test)
@@ -240,33 +236,6 @@ abline(v=median(abs(NPP_test - NPP_pred_tree)/NPP_test)*100, col = "red")
 
 saveRDS(reg_tree, file.path(path_models, "TREE_train_35k.rds"))
 
-######## Regression tree rpart normalized ##########
-
-reg_tree_2 <- rpart(NPP~., method="anova", data = df_train_norm)
-
-printcp(reg_tree_2)
-summary(reg_tree_2)
-
-plot(reg_tree_2)
-text(reg_tree_2, use.n=TRUE, all=TRUE, cex=.8)
-
-NPP_pred_tree2 <- predict(reg_tree_2, df_test_norm)
-
-pred_MAE_tree2 <- mean(abs(na.omit(df_test$NPP) - NPP_pred_tree2))
-
-
-pred_PMAE_tree2 <- mean(abs(df_test_norm$NPP - NPP_pred_tree2)/df_test_norm$NPP)
-
-pred_log_tree2 <- exp(NPP_pred_tree2)
-
-
-#Results
-results_tree_rpart <- data.frame("Model"="Reg Tree transf",
-                               "PMAE Train"=mean(abs(df_train$NPP - exp(predict(reg_tree_2, df_train_norm)))/df_train$NPP),
-                               "PMAE Test"=mean(abs(df_test$NPP - exp(predict(reg_tree_2, df_test_norm)))/df_test$NPP))
-PMAE_conv_tree2 <- mean(abs(NPP_test - pred_log_tree2)/NPP_test)
-
-hist(NPP_test - pred_log_tree2, breaks=100, xlab = "% de desviacion", main = "Desviación (en %) de la prediccion\nrespecto al dato real")
 
 ####### regresion using randomForest #############
 

@@ -47,13 +47,14 @@ reg_tree <- readRDS(grep("TREE", models_list, value = T))
 clean_npp <- raster(file.path(path_NPP, "NPP_map_clean.tif"))
 plot(clean_npp, main="NPP map")
 
-
+npp_area <- reclassify(clean_npp, matrix(c(0, 3000, 0), ncol=3))
 ###### RF prediction #######
 pmt <- proc.time()
 beginCluster()
 RF_prediction <- raster::predict(all_bio, reg_rf_tune)
 endCluster()
 proc.time() - pmt
+RF_prediction <- RF_prediction + npp_area 
 
 plot(RF_prediction, main="RF Prediction map")
 
@@ -75,7 +76,7 @@ hist(abs(RF_error_map), breaks=50)
 mean(RF_PMAE_map)
 mean(getValues(RF_PMAE_map))
 
-writeRaster(RF_prediction, file.path(path_predictions, "RF_70K.tiff"))
+writeRaster(RF_prediction, file.path(path_predictions, "RF_35K.tiff"))
 
 
 

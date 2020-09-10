@@ -29,8 +29,13 @@ if(!dir.exists(path_predictions)){
   dir.create(path_predictions)
 }
 
+
+path_future_scenarios <- file.path(path_project, "future_scenarios")
+if(!dir.exists(path_future_scenarios)){
+  dir.create(path_future_scenarios)
+}
 #Set seed
 seed <- 42
 
 #Extention of the cropped area
-crop_extention <- extent(-10, 4.5, 35.6, 44) #Xmin, Xmax, Ymin, Ymax
+#crop_extention <- extent(-10, 4.5, 35.6, 44) #Xmin, Xmax, Ymin, Ymax
