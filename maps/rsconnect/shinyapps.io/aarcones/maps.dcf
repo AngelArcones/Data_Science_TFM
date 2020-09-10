@@ -1,0 +1,10 @@
+name: maps
+title:
+username:
+account: aarcones
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2784770
+bundleId: 3615919
+url: https://aarcones.shinyapps.io/maps/
+when: 1599758407.62971
