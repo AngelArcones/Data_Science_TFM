@@ -49,4 +49,32 @@ To do so, climate is the best candidate, as climatic maps (estimations) are free
 These variables, at a resolution of 5km x5km, can be downloaded [here](https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip) in raster format (.tif).
 Additionally, I have also included the latitude as a variable that can help the modelling of NPP, as it does not change over time and can serve as a proxy of solar radiation.
 
-### Process
+NPP data for the present has been retrieved from the [NTGS repository](http://files.ntsg.umt.edu/data/NTSG_Products/MOD17/GeoTIFF/MOD17A3/) ( Numerical Terradynamic Simulation Group).
+
+
+### Data preparation
+
+Upon retrieving the NPP data and the bioclimatic variables, the process begins with the code detailed in the [01_Data_preparation notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/01_Data_preparation.ipynb).
+This includes cleaning the NPP map and creating 35,000 random sampling points to extract the NPP data that will go as target variable into the models:
+
+
+And also generating a Miami Model NPP map to compare (and also extract data)
+
+
+This process ends with the creation of the dataset that also includes the values for each of the 19 bioclimatic variables for each sampling point.
+
+### Data exploration
+
+As detailed in the [02_Data_exploration notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/02_Data_exploration.ipynb), this step is focused on cleaning the dataset from NAs and errors, exploring the correlation between variables and using boruta method for feature selection.
+
+
+
+### Data modelling
+
+This part is commented in the [03_Data_modelling notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/03_Data_modelling.ipynb), and includes the partition of the data, variable transformation and the process from the most simple regression models to the most complex and accurate ones.
+I compared all models, as well as the results from the Miami Model, using Percentage Mean Absolute Error (PMAE) and Root Mean Squared Error (RMSE) as metrics. I selected the Random Forest as the best method to use for predictions
+
+### Predictions
+
+Finally, the trained models are predicted into global maps, as shown in the [04_Prediction notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/04_Prediction.ipynb), and compared with the reference NPP maps.
+
