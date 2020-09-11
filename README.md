@@ -94,4 +94,10 @@ Additional scripts included in the repository (future_predictions.R) contain the
 ## The results
 
 The results of this project (NPP reference map and model predictions for the present and future scenarios) are available for interactive visualization in the following link:
+
  https://aarcones.shinyapps.io/maps/
+ 
+ 
+ ## Conclussion
+ 
+ In this project I developed an improved, easily implementable estimation of the NPP for different periods based on climatic maps. The results show great potential, although there is still room for improvement. Future step should include training more complex models (based for example on Boosting algorithms), as well as with larger data samplings to try to reduce the overfitting. Also, the final goal is to make a distributable code and pre-trained model that would allow any researcher, even with very basic programming knowledge, to build its own NPP maps for any period of interest, towards a better understanding of the past and future potential changes in our ecosystems.
