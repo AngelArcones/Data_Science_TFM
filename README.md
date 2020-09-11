@@ -2,6 +2,8 @@
 
 This is my master's project for KSchool's 19th ed. of the Master in Data Science
 
+The final results are available as an [interactive visualization]( https://aarcones.shinyapps.io/maps/)
+
 ## Introduction:
 The aim of this project is to find a model that can predict global-scale Net Primary Productivity based on accesible climate maps.
 This sounds concise, bit not clear, so let's explore a little more into this idea.
@@ -49,7 +51,7 @@ To do so, climate is the best candidate, as climatic maps (estimations) are free
 These variables, at a resolution of 5km x5km, can be downloaded [here](https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip) in raster format (.tif).
 Additionally, I have also included the latitude as a variable that can help the modelling of NPP, as it does not change over time and can serve as a proxy of solar radiation.
 
-NPP data for the present has been retrieved from the [NTGS repository](http://files.ntsg.umt.edu/data/NTSG_Products/MOD17/GeoTIFF/MOD17A3/) ( Numerical Terradynamic Simulation Group).
+NPP data for the present has been retrieved from the [NTGS repository](http://files.ntsg.umt.edu/data/NTSG_Products/MOD17/GeoTIFF/MOD17A3/) (Numerical Terradynamic Simulation Group). This file is not included in the repository due to its size.
 
 
 ### Data preparation
@@ -57,9 +59,11 @@ NPP data for the present has been retrieved from the [NTGS repository](http://fi
 Upon retrieving the NPP data and the bioclimatic variables, the process begins with the code detailed in the [01_Data_preparation notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/01_Data_preparation.ipynb).
 This includes cleaning the NPP map and creating 35,000 random sampling points to extract the NPP data that will go as target variable into the models:
 
+![image 1](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2001.PNG)
 
 And also generating a Miami Model NPP map to compare (and also extract data)
 
+![image2](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2002.PNG)
 
 This process ends with the creation of the dataset that also includes the values for each of the 19 bioclimatic variables for each sampling point.
 
@@ -67,14 +71,27 @@ This process ends with the creation of the dataset that also includes the values
 
 As detailed in the [02_Data_exploration notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/02_Data_exploration.ipynb), this step is focused on cleaning the dataset from NAs and errors, exploring the correlation between variables and using boruta method for feature selection.
 
-
+![image3](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2003.PNG)
 
 ### Data modelling
 
 This part is commented in the [03_Data_modelling notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/03_Data_modelling.ipynb), and includes the partition of the data, variable transformation and the process from the most simple regression models to the most complex and accurate ones.
 I compared all models, as well as the results from the Miami Model, using Percentage Mean Absolute Error (PMAE) and Root Mean Squared Error (RMSE) as metrics. I selected the Random Forest as the best method to use for predictions
 
+![image4](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2004.PNG)
+
+
 ### Predictions
 
 Finally, the trained models are predicted into global maps, as shown in the [04_Prediction notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/04_Prediction.ipynb), and compared with the reference NPP maps.
 
+![image5](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2005.PNG)
+
+
+Additional scripts included in the repository (future_predictions.R) contain the code to create predictions according to different climate change scenarios, based on the MIROC6 data available in [WorldClim](https://www.worldclim.org/data/cmip6/cmip6_clim2.5m.html)
+
+
+## The results
+
+The results of this project (NPP reference map and model predictions for the present and future scenarios) are available for interactive visualization in the following link:
+ https://aarcones.shinyapps.io/maps/
