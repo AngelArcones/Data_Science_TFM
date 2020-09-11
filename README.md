@@ -37,3 +37,16 @@ This are the equations that define the Miami Model
 
 and they produce curves like these:
 ![miami_model_graph](https://wergosum.com/wp-content/uploads/2014/01/miami-curves.png)
+
+Although the Miami Model is still widely used, it is clearly outdated and its performances is far from perfect. So the goal of this project is to provide a new model that can be easily implemented for ecological research.
+
+## The project
+
+### Variables to use
+
+The idea is to use variables that are available for different time periods, from the last interglacial and glacial periods to late 21<sup>st</sup> century.
+To do so, climate is the best candidate, as climatic maps (estimations) are freely accesible for many different periods from [WorldClim](https://www.worldclim.org/) and other sources. In this project, I have included what is known as ["bioclimatic variables"](https://www.worldclim.org/data/bioclim.html) (or bioclims), which are 19 variables derived from monthly temperature and precipitation data that are useful to represent climatic dynamics, seasonality and relevant biological aspects.
+These variables, at a resolution of 5km x5km, can be downloaded [here](https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip) in raster format (.tif).
+Additionally, I have also included the latitude as a variable that can help the modelling of NPP, as it does not change over time and can serve as a proxy of solar radiation.
+
+### Process
