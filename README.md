@@ -2,7 +2,7 @@
 
 This is my master's project for KSchool's 19th ed. of the Master in Data Science
 
-The final results are available as an [interactive visualization]( https://aarcones.shinyapps.io/maps/)
+The final results are available as an [interactive visualization]( https://aarcones.shinyapps.io/maps/) to compare the reference data with the predictions from the selected model (view by default), with the option to compare also with predictions for mid and late 21<sup>st</sup> century from different climate change scenarios. More details in the results sections.
 
 ## Introduction:
 The aim of this project is to find a model that can predict global-scale Net Primary Productivity based on accesible climate maps.
@@ -57,7 +57,7 @@ NPP data for the present has been retrieved from the [NTGS repository](http://fi
 
 ### Data preparation
 
-Upon retrieving the NPP data and the bioclimatic variables, the process begins with the code detailed in the [01_Data_preparation notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/01_Data_preparation.ipynb), corresponding to the script _data\_prep.R_. This step requires the data from the folder _bioclims\_2.5_, as well as a folder named _NPP\_tif\_data_ with the NPP data linked in the previous part.
+Upon retrieving the NPP data and the bioclimatic variables, the process begins with the code detailed in the [01_Data_preparation notebook](https://github.com/AngelArcones/Data_Science_TFM/blob/master/01_Data_preparation.ipynb), corresponding to the script _data\_prep.R_. This step requires the data from the folder _bioclims\_2.5_, as well as a folder named _NPP\_tif\_data_ with the NPP data linked in the previous section.
 The process includes cleaning the NPP map and creating 35,000 random sampling points to extract the NPP data that will go as target variable into the models:
 
 ![image 1](https://github.com/AngelArcones/Data_Science_TFM/blob/master/Images/Image%2001.PNG)
@@ -97,6 +97,11 @@ Am additional script included in the repository (_future\_predictions.R_) contai
 The results of this project (NPP reference map and model predictions for the present and future scenarios) are available for interactive visualization in the following link:
 
  https://aarcones.shinyapps.io/maps/
+   
+ The visualization by default shows the NPP map used as reference (above) and the prediction obtained from the Random Forest model (below).  
+ It also includes the option to visualize predictions for mid and late 21<sup>2</sup> century, from two of the main climate change scenarios:
+ - Stable emissions: scenario assuming that the greenhouse gases emissions would cease to increase in the next decade and stay stable over time.
+ - Increasing emissions: scenario assuming the emission of greenhouse gases keeps increasing at the same rate as in the last decades, without stabilization.
  
  
  ## Conclussion
