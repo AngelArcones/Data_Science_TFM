@@ -13,7 +13,7 @@ This sounds concise, bit not clear, so let's explore a little more into this ide
 The Net Primary Productivity (abreviated NPP) is the difference between the amount of carbon that the plants asimilate via [primary productivity](https://en.wikipedia.org/wiki/Primary_production) to generate biomass and the carbon that they release during respiration.
 In shot, is the net balance of carbon that is being captured by plants. It is expressed as grams of Carbon / m<sup>2</sup> / year
 
-![NPP_expl](https://lh3.googleusercontent.com/proxy/2EYjvKj0bKYXKdbKY1cdmm5aocirMLPhOehssOAWtJL30psLtpdtd6_JMyhpyH5ok0MGO8V6jtCf3799mB3jVUU)
+![NPP_expl](http://www.bio.miami.edu/dana/pix/npp.jpg)
 
 
 ### Why is NPP important?
